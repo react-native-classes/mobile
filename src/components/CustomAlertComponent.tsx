@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, Modal, Text, View } from 'react-native'
 import customAlertStyle from '../styles/customAlertStyle'
-import Icon from 'react-native-ionicons'
 import { dataCustumAlert } from '../models/alertModel'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export const CustomAlertComponent = ({dataCustomAlert,closeAlert,property}:any) => {
   return (
@@ -16,7 +16,10 @@ export const CustomAlertComponent = ({dataCustomAlert,closeAlert,property}:any) 
                   <Text style={customAlertStyle.textTitle}>{dataCustomAlert.title}</Text> 
                   <Text>{dataCustomAlert.icon}</Text>
                   <Text>{dataCustomAlert.icon}</Text>
-                  <Icon style={customAlertStyle.iconCardAlert} name='add' />
+                  <Text>
+                     <Icon style={customAlertStyle.iconCardAlert} name='add' />   
+                  </Text>
+                  
                   <Text>{dataCustomAlert.message}</Text>   
                </View>
                <View style={customAlertStyle.buttomCardAlert}>
