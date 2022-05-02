@@ -10,33 +10,35 @@ const customAlertStyle = StyleSheet.create({
         },
         contentAlert:{
             width:200,
-            height:200,
+            height:'25%',
             backgroundColor:'#f7f7f7',
             borderRadius:10,
             borderStyle:'solid',
-            borderColor:'#363636'
+            borderColor:'#363636',
+            padding:15,
+            display:'flex',
+            position:'relative'
         },
         titleCardAlert:{
-            height:'20%',
-            //backgroundColor:'blue'
+            backgroundColor:'blue',
+            flex:1
         },
         contentCardAlert:{
-            height:'60%',
-            //backgroundColor:'green'
-        },
-        buttomCardAlert:{
-            height:'20%',
-           //backgroundColor:'red',
-            justifyContent:'flex-end',
-            flex:1
+            flex:2,
+            flexDirection:'column',
+            justifyContent:'space-between',
+            alignItems:'center'
         },
         textTitle:{
             color:'black'
         },
         iconCardAlert:{
-            color:'black',
-            backgroundColor:'red',
-            fontSize:50,
+            width:100,
+            textAlign:'center',
+        },
+        buttomCardAlert:{
+            justifyContent:'flex-end',
+            flex:1
         }
     }
 )

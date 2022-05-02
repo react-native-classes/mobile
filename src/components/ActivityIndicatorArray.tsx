@@ -1,32 +1,20 @@
 import React, { useState } from 'react'
-import { Button, KeyboardAvoidingView, ModalProps, ScrollView, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Image, KeyboardAvoidingView, ModalProps, ScrollView, Text, TextInput, View } from 'react-native'
 import { dataCustumAlert } from '../models/alertModel'
 import { dataPerson } from '../models/dataPerson'
 import activityIndicatorStyle from '../styles/activityIndicatorStyle'
 import { CustomAlertComponent } from './CustomAlertComponent'
 
 export const ActivityIndicatorArray = () => {
-
-    let personajesInitialState: dataPerson[] = [
-        {
-            name: "Jorge Beltran",
-            phone: '1123554876'
-        },
-        {
-            name: "Federico Gutierrez",
-            phone: '1123554876'
-        },
-        {
-            name: "Rogger Paredes",
-            phone: '1123554876'
-        },
-    ]
+    
+    let personajesInitialState: Array<dataPerson> = []
 
     let dataModalInitialState:dataCustumAlert={
-        header:"null",
-        title:"Se agrego con Exito ",
-        icon:"wallet",
-        message:"null",
+        header:"",
+        title:"",
+        icon:"",
+        message:"",
+        iconColor:"",
         visible:false,
         propertyModal:{
             animationType:'fade',
@@ -34,22 +22,36 @@ export const ActivityIndicatorArray = () => {
         }
     }
 
-    const [first, setfirst] = useState<any>(personajesInitialState)
+    let initialDataForm:dataPerson = {
+        name:"",
+        phone:""
+    }
+
+    const [personajes, setPersonajes] = useState<any>(personajesInitialState)
     const [dataCustomAlert, setDataCustomAlert] = useState<dataCustumAlert>(dataModalInitialState)
+    const [dataForm, setdataForm] = useState(initialDataForm)
 
     const addElementWithAlert = () => {
-        let newElement: dataPerson = {
-            name: "Jorge",
-            phone: "116233589"
-        }
+        setPersonajes([...personajes,dataForm])
+        Alert.alert(
+            "",
+            "Se añadio con exito el nuevo elemento",
+            [
+              {
+                text: "ENTENDIDO",
+                onPress: () => console.log("Se mostro la alerta informatica"),
+                style:'default'
+              },
+            ]
+          );
     }
     
     const addElementWithCustomAlert = () => {
-        let newElement: dataPerson = {
-            name: "Jorge",
-            phone: "116233589"
-        }
-        setDataCustomAlert({...dataCustomAlert,visible:true})
+        let contentAlert:dataCustumAlert={...dataCustomAlert,
+        icon:'checkmark-circle',visible:true,iconColor:"#4BB543",
+        message:'Se agrego con exito el elemnto'}
+        setDataCustomAlert(contentAlert)
+        setPersonajes([...personajes,dataForm])
     }
 
     const closeAlert = (newState:boolean) => {
@@ -59,36 +61,57 @@ export const ActivityIndicatorArray = () => {
     const custumAlertModal = () => {
         return (
         <View><CustomAlertComponent dataCustomAlert={dataCustomAlert}
-        closeAlert={closeAlert} property={dataCustomAlert.propertyModal}/></View>)
+        closeAlert={closeAlert} property={dataCustomAlert.propertyModal
+        }/></View>)
+    }
+
+    const changeNameInput = (value:any,index:any) => {
+        let newDataInput:dataPerson = {...dataForm}
+        newDataInput.name=(index==0)?value:newDataInput.name
+        newDataInput.phone=(index==1)?value:newDataInput.phone
+        setdataForm(newDataInput)
     }
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
             <ScrollView>{custumAlertModal()}
                 <View style={[activityIndicatorStyle.contentBox]}>
+                    <Image
+                        style={activityIndicatorStyle.logo}
+                        source={require('../assets/logoBaufest.jpg')}
+                    />
                     <View style={[ activityIndicatorStyle.contentInput]}>
                         <TextInput style={activityIndicatorStyle.input} placeholder='Name User'
-                            placeholderTextColor="#363636" keyboardType='phone-pad'></TextInput>
+                            placeholderTextColor="#363636" onChangeText={(value) => {changeNameInput(value,0)}}
+                            value={dataForm.name}></TextInput>
                         <TextInput style={activityIndicatorStyle.input} placeholder="Number Phone"
-                            placeholderTextColor="#363636" keyboardType="phone-pad"></TextInput>
+                            placeholderTextColor="#363636" keyboardType="phone-pad" 
+                            onChangeText={(value) => {changeNameInput(value,1)} } value={dataForm.phone}></TextInput>
+                        
                         <View style={activityIndicatorStyle.buttonAdd}>
                             <Button title='Add element with alert' onPress={() => addElementWithAlert()} />    
                         </View>
                         <View style={activityIndicatorStyle.buttonAdd}>
-                            <Button title='Add element with custum alert ' onPress={() => addElementWithCustomAlert()} />
+                            <Button title='Add element with custum alert ' 
+                            onPress={() => addElementWithCustomAlert()} />
                         </View>
                     </View>
-                    {
-                        (first.map((data: any,index:number) => {
-                            return (
-                                
-                                <View key={index} style={activityIndicatorStyle.contentCard}>
-                                    <Text style={activityIndicatorStyle.textCenter}><Text style={activityIndicatorStyle.descriptionText}>Nombre: </Text>{data['name']}</Text>
-                                    <Text style={activityIndicatorStyle.textCenter}><Text style={activityIndicatorStyle.descriptionText}>Telefono: </Text>{data['phone']}</Text>
-                                </View>
-                            )
-                        }))
-                    }
+                    <View style={[activityIndicatorStyle.contentArrayPersonajes,activityIndicatorStyle.shadow]}>
+                        {(personajes.length==0)&&<View style={activityIndicatorStyle.whitOutContent}>
+                                <Text>No Hay Elementos en el Array</Text>
+                            </View>}
+                        {(personajes.length>0)&&
+                            (personajes.map((data: any,index:number) => {
+                                return (
+                                    <View key={index+1} style={activityIndicatorStyle.contentCard}>
+                                        <Text style={activityIndicatorStyle.textCenter}><Text style={activityIndicatorStyle.descriptionText}>Nombre: </Text>{data['name']}</Text>
+                                        <Text style={activityIndicatorStyle.textCenter}><Text style={activityIndicatorStyle.descriptionText}>Telefono: </Text>{data['phone']}</Text>
+                                    </View>
+                                )
+                            }))
+                        }    
+                    </View>
+                    
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
