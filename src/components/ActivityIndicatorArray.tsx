@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Button, Image, KeyboardAvoidingView, ModalProps, ScrollView, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Button, Image, KeyboardAvoidingView, ModalProps, ScrollView, Text, TextInput, View } from 'react-native'
 import { dataCustumAlert } from '../models/alertModel'
 import { dataPerson } from '../models/dataPerson'
 import activityIndicatorStyle from '../styles/activityIndicatorStyle'
@@ -30,8 +30,10 @@ export const ActivityIndicatorArray = () => {
     const [personajes, setPersonajes] = useState<any>(personajesInitialState)
     const [dataCustomAlert, setDataCustomAlert] = useState<dataCustumAlert>(dataModalInitialState)
     const [dataForm, setdataForm] = useState(initialDataForm)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const addElementWithAlert = () => {
+    const addElementWithAlert = async () => {
+        await updateUserService()
         setPersonajes([...personajes,dataForm])
         Alert.alert(
             "",
@@ -72,6 +74,14 @@ export const ActivityIndicatorArray = () => {
         setdataForm(newDataInput)
     }
 
+    const updateUserService = async () => { 
+        setIsLoading(true)
+        setTimeout(() => { //Esta tambien es un callback
+            console.log('Set timeout terminado')
+            setIsLoading(false)
+        }, 2000); //1 segundo
+    }
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
             <ScrollView>{custumAlertModal()}
@@ -97,10 +107,11 @@ export const ActivityIndicatorArray = () => {
                         </View>
                     </View>
                     <View style={[activityIndicatorStyle.contentArrayPersonajes,activityIndicatorStyle.shadow]}>
-                        {(personajes.length==0)&&<View style={activityIndicatorStyle.whitOutContent}>
+                        { (isLoading) && <ActivityIndicator color={'#ff3030'} size={'large'}/> }
+                        {(personajes.length==0) && <View style={activityIndicatorStyle.whitOutContent}>
                                 <Text>No Hay Elementos en el Array</Text>
                             </View>}
-                        {(personajes.length>0)&&
+                        {(personajes.length>0 && !isLoading)&&
                             (personajes.map((data: any,index:number) => {
                                 return (
                                     <View key={index+1} style={activityIndicatorStyle.contentCard}>

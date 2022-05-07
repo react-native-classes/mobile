@@ -1,16 +1,17 @@
+import { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet } from 'react-native'
 
 const activityIndicatorStyle = StyleSheet.create({
-    
     contentBox:{
         alignItems:'center',
         width:Dimensions.get('window').width,
         flexDirection:'column',
-        height: Dimensions.get('window').height,
+        height:Dimensions.get('window').height,
         paddingTop:0,
+        justifyContent:'center'
     },
     logo:{
-        width:'40%',
+        width:200,
         height:100,
         resizeMode: 'stretch',
     },
@@ -74,6 +75,9 @@ const activityIndicatorStyle = StyleSheet.create({
         flex:1,
         borderRadius:5,
         height:50
+    },
+    indicator:{
+        fontSize:20
     }
 })
 export default activityIndicatorStyle
